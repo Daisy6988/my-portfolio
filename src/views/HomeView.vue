@@ -7,19 +7,16 @@ import ProjectCard from '@/components/ProjectCard.vue';
 
 const router = useRouter();
 
-// 使用 BASE_URL 確保 GitHub Pages 路徑正確
 const heroBg = `url(${import.meta.env.BASE_URL}images/forest.jpg)`
 </script>
 
 <template>
   <div class="home-page">
-
-    <!-- hero 背景改用 inline style，避免 CSS 寫死路徑在子目錄部署時失效 -->
     <section id="about" class="hero-section" :style="{ backgroundImage: heroBg }">
       <div class="intro-box">
-        <h1>Hi, 我是開發者</h1>
-        <p>追求簡潔且充滿生命力的程式風格。</p>
-        <p>目前我持續深化 JavaScript 與 Vue 3 的實作能力，並善用 AI 工具進行 Code Review。</p>
+        <h1>Hi, 我是開發者-Daisy&nbsp;怡雯</h1>
+        <p>〔追求簡潔且充滿生命力的程式風格。〕</p>
+        <p>〔目前我持續深化 JavaScript 與 Vue 3 的實作能力，並善用 AI 工具進行 Code Review。〕</p>
         <div class="action-buttons">
           <AppButton label="查看作品" @click="router.push('projects')" />
           <AppButton label="我的技能" @click="router.push('skills')" />
@@ -40,7 +37,6 @@ const heroBg = `url(${import.meta.env.BASE_URL}images/forest.jpg)`
         <ProjectCard v-for="project in projects" :key="project.id" :project="project" />
       </div>
     </section>
-
   </div>
 </template>
 
@@ -81,12 +77,21 @@ const heroBg = `url(${import.meta.env.BASE_URL}images/forest.jpg)`
 .intro-box {
   position: relative;
   z-index: 1;
+  padding: 0 20px;
 }
 
 .intro-box h1 {
   font-size: 3rem;
   color: #5d734a;
   margin-bottom: 1rem;
+}
+
+.intro-box p {
+  font-size: 1.5rem;
+  color: #29470b;
+  line-height: 1.8;
+  margin: 0 auto 0.5rem;
+  max-width: 600px;
 }
 
 .action-buttons {
@@ -111,5 +116,18 @@ h2 {
   text-align: center;
   color: #87a96b;
   font-size: 2rem;
+}
+
+/* RWD */
+@media (max-width: 768px) {
+  .intro-box h1 { font-size: 2.2rem; }
+  .intro-box p  { font-size: 1rem; }
+}
+
+@media (max-width: 480px) {
+  .intro-box h1 { font-size: 1.8rem; }
+  .intro-box p  { font-size: 0.9rem; }
+  .action-buttons { gap: 12px; }
+  .section-container { padding: 3rem 5%; }
 }
 </style>

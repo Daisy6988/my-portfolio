@@ -4,7 +4,8 @@
     :aria-label="ariaLabel || label"
     v-bind="$attrs"
   >
-    <span>
+    <span class="btn-border"></span>
+    <span class="btn-label">
       <i v-if="icon" :class="icon" aria-hidden="true"></i>
       {{ label }}
     </span>
@@ -21,86 +22,126 @@ defineProps({
 </script>
 
 <style scoped>
+/* ── 基礎 ── */
 .app-btn {
   position: relative;
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  border-radius: 50px;
-  
-  /* 增加漸層：從較亮的草綠到深森林綠 */
-  background: linear-gradient(180deg, #a3c489 0%, #5d734a 100%);
-  
-  /* 增加內陰影增加立體感 */
-  box-shadow: 
-    0px 4px 10px rgba(93, 115, 74, 0.3), 
-    inset 0px 1px 2px rgba(255, 255, 255, 0.4);
-  
-  font-family: 'Noto Sans TC', sans-serif;
-  overflow: hidden;
+  border: none;
+  border-radius: 8px;       /* 長方形，小圓角 */
+  background: transparent;
   cursor: pointer;
-  border: 1px solid #4a5e3a; /* 增加細邊框更有質感 */
-  text-decoration: none;
-  transition: all 0.3s ease;
+  user-select: none;
+  overflow: hidden;
+  font-family: 'Noto Sans TC', sans-serif;
   margin: 0;
+  padding: 0;
+
+  /* 固定尺寸 */
+  width: 130px;
+  height: 46px;
+
+  transition: color 0.3s ease;
 }
 
-.app-btn::after {
-  content: '';
-  width: 0%;
-  height: 100%;
-  /* 滑入時顏色變得更亮 */
-  background: linear-gradient(180deg, #d4e3c5 0%, #87a96b 100%);
+/* ── 邊框層 ── */
+.btn-border {
   position: absolute;
-  transition: all 0.4s ease-in-out;
-  right: 0;
+  inset: 0;
+  border-radius: 8px;
+  border: 2px solid #4caf7d;   /* 亮青翠綠 */
   z-index: 1;
+  pointer-events: none;
 }
 
-.app-btn:hover::after {
-  right: auto;
-  left: 0;
-  width: 100%;
+/* 掃光偽元素 */
+.btn-border::before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 8%;
+  height: 500%;
+  background: rgba(255, 255, 255, 0.15);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-60deg);
+  transition: all 0.35s ease;
 }
 
-.app-btn span {
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-  padding: 8px 14px;
-  color: #fff;
-  font-size: 0.95em;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  z-index: 2; /* 確保文字浮在漸層背景上方 */
+/* ── 文字層 ── */
+.btn-label {
   position: relative;
-  text-shadow: 0px 1px 2px rgba(243, 237, 237, 0.2); 
-  transition: all 0.3s ease-in-out;
-  font-family: 'Noto Sans TC', sans-serif;                  
-  font-size: 1.1rem;                   
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45em;
+  width: 100%;
+  height: 100%;
+  color: #4caf7d;             /* 亮青翠綠文字 */
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  font-family: 'Noto Sans TC', sans-serif;
+  white-space: nowrap;
+  transition: color 0.3s ease;
 }
 
-@media (max-width: 480px) {
-  .app-btn span {
-    padding: 6px 10px;
-    font-size: 0.8rem;
+/* ── Hover：掃光展開填滿 ── */
+.app-btn:hover .btn-border::before {
+  width: 100%;
+  background: #4caf7d;
+}
+
+.app-btn:hover .btn-label {
+  color: #ffffff;
+}
+
+/* ── Active ── */
+.app-btn:active .btn-border::before {
+  background: #3a9e6c;
+}
+
+/* ── Secondary（未選中 filter）── */
+.app-btn.secondary .btn-border {
+  border-color: #4caf7d;
+}
+
+.app-btn.secondary .btn-label {
+  color: #4caf7d;
+}
+
+.app-btn.secondary:hover .btn-border::before {
+  background: #4caf7d;
+}
+
+.app-btn.secondary:hover .btn-label {
+  color: #ffffff;
+}
+
+/* ── 平板 ── */
+@media (max-width: 768px) {
+  .app-btn {
+    width: 110px;
+    height: 42px;
   }
 
-.app-btn:hover span {
-  color: #3e4d31; 
-  text-shadow: none;
+  .btn-label {
+    font-size: 0.92rem;
+  }
 }
 
-/* 變體：紙張淺色系也加上漸層 */
-.app-btn.secondary {
-  background: linear-gradient(180deg, #fdfaf6 0%, #e8e4d9 100%);
-  border: 1px solid #dcd7ce;
-}
-.app-btn.secondary span {
-  color: #5d734a;
-}
-.app-btn.secondary::after {
-  background: linear-gradient(180deg, #ffffff 0%, #c8d8b8 100%);
-}
+/* ── 手機 ── */
+@media (max-width: 480px) {
+  .app-btn {
+    width: 90px;
+    height: 38px;
+  }
+
+  .btn-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+  }
 }
 </style>
