@@ -6,7 +6,7 @@
       <template v-if="project.imageUrl">
         <img 
         :src="project.imageUrl" 
-        :alt="project.title + ' 作品截圖'" 
+        :alt="project.title + ' 作品'" 
         class="card-img" 
         loading="lazy" />
       </template>

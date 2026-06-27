@@ -1,34 +1,21 @@
 <script setup>
-import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { skills, projects } from '@/data/portfolioData.js';
 import AppButton from '@/components/AppButton.vue';
 import SkillCard from '@/components/SkillCard.vue';
 import ProjectCard from '@/components/ProjectCard.vue';
-import CubesLoader from '@/components/CubesLoader.vue'; // 確保路徑正確
 
 const router = useRouter();
-const isLoading = ref(true);
 
-
-
-// 模擬載入過程
-onMounted(() => {
-  setTimeout(() => {
-    isLoading.value = false;
-  }, 1200); // 設定 1.2 秒後顯示內容
-});
+// 使用 BASE_URL 確保 GitHub Pages 路徑正確
+const heroBg = `url(${import.meta.env.BASE_URL}images/forest.jpg)`
 </script>
 
 <template>
-  <div v-if="isLoading" class="loading-wrapper">
-    <CubesLoader />
-  </div>
+  <div class="home-page">
 
-  <div v-else class="home-page">
-
-
-    <section id="about" class="hero-section"> 
+    <!-- hero 背景改用 inline style，避免 CSS 寫死路徑在子目錄部署時失效 -->
+    <section id="about" class="hero-section" :style="{ backgroundImage: heroBg }">
       <div class="intro-box">
         <h1>Hi, 我是開發者</h1>
         <p>追求簡潔且充滿生命力的程式風格。</p>
@@ -53,58 +40,44 @@ onMounted(() => {
         <ProjectCard v-for="project in projects" :key="project.id" :project="project" />
       </div>
     </section>
+
   </div>
 </template>
 
-
-
 <style scoped>
-/* Loading 頁面樣式 */
-.loading-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #fdfaf6;
-  overflow: visible;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* 原有頁面樣式 */
 .home-page {
   background-color: #fdfaf6;
   background-image: radial-gradient(#e0dcd5 1px, transparent 1px);
   background-size: 30px 30px;
   min-height: 100vh;
   padding-bottom: 50px;
+  animation: fadeIn 0.5s ease both;
 }
 
 .hero-section {
-  position: relative;
   height: 80vh;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-
-
-  background-image: url('/images/forest.jpg');
   background-size: cover;
   background-position: center;
   position: relative;
 }
 
-/* 淡化遮罩層 */
 .hero-section::before {
   content: '';
   position: absolute;
   inset: 0;
   background: rgba(253, 250, 246, 0.72);
-  /* 你的主色調白底，透明度可調 */
   backdrop-filter: blur(1.5px);
-  /* 輕微模糊，更夢幻 */
 }
 
-/* 讓文字浮在遮罩上面 */
 .intro-box {
   position: relative;
   z-index: 1;
