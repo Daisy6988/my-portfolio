@@ -81,7 +81,7 @@ export const projects = [
     imageUrl: '/images/cvImg.jpg',
     animColor: '#e8b84b',
     githubUrl: 'https://github.com/Daisy6988/portfolio.git',
-    demoUrl: '',
+    demoUrl: 'https://daisy6988.github.io/my-portfolio/',
   },
   {
     id: 2,
