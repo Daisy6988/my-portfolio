@@ -75,7 +75,7 @@ export const projects = [
   {
     id: 1,
     title: '個人履歷網站',
-    description: 'Vue 3 打造，包含方塊物理動畫、Props/Emit 架構設計，展現前端工程能力與設計美感。',
+    description: 'Vue 3 、Sweetalert2打造，展現前端工程能力與設計美感。',
     category: 'FRONTEND',
     year: '2026',
     status: '完成',
