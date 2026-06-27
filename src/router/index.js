@@ -5,7 +5,8 @@ import SkillsView from '../views/SkillsView.vue';
 import ProjectsView from '../views/ProjectsView.vue';
 
 const router = createRouter({
-  history: createWebHistory(),
+  // 傳入 BASE_URL，本地是 '/'，GitHub Pages 是 '/my-portfolio/'
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: '/', name: 'home', component: HomeView },
     { path: '/skills', name: 'skills', component: SkillsView },
