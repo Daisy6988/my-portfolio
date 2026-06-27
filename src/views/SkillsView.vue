@@ -47,7 +47,7 @@ onBeforeUnmount(() => window.removeEventListener('resize', onResize));
   <div class="skills-page">
     <header class="skills-header">
       <h1>技能樹</h1>
-      <p>探索我在森林中習得的各種能力</p>
+      <p>〔探索我在森林中習得的各種能力〕</p>
     </header>
 
     <!-- 桌機 + 平板：grid -->
@@ -118,7 +118,7 @@ onBeforeUnmount(() => window.removeEventListener('resize', onResize));
 
 .skills-header p {
   color: #29470b;
-  font-size: 1.1rem;
+  font-size: 1.5rem;
 }
 
 /* ── 桌機 grid ── */

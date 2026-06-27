@@ -63,7 +63,7 @@ onBeforeUnmount(() => window.removeEventListener('resize', onResize));
   <div class="projects-page">
     <header class="projects-header">
       <h1>作品集</h1>
-      <p>在數位森林裡所創造的每一個小實驗</p>
+      <p>〔在數位森林裡所創造的每一個小實驗〕</p>
       <div class="filter-btns">
         <AppButton label="全部" :variant="currentFilter === 'ALL' ? 'primary' : 'secondary'"
           @click="setFilter('ALL')" />
@@ -122,7 +122,7 @@ onBeforeUnmount(() => window.removeEventListener('resize', onResize));
 
 .projects-header p {
   color: #29470b;
-  font-size: 1.1rem;
+  font-size: 1.5rem;
 }
 
 .filter-btns {
