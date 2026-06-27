@@ -1,0 +1,10 @@
+
+:root {
+  --forest-green: #87a96b;
+  --paper-white: #fdfaf6;
+  --warm-brown: #5d734a;
+}
+
+body {
+  font-family: 'Noto Sans TC', sans-serif; /* 全站預設字體 */
+}
