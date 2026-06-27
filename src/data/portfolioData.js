@@ -249,9 +249,9 @@ export const projects = [
     year: '2026',
     status: '完成',
     techs: ['Illustrator', 'Graphic Design'],
-    imageUrl: img('photoImg.jpg'),
+    imageUrl: img('weddingImg.jpg'),
     animColor: '#f59e0b',
-    githubUrl: '',
+    githubUrl: 'https://github.com/Daisy6988/images/blob/main/weddingImg.jpg',
     demoUrl: '',
   },
   {
@@ -264,7 +264,7 @@ export const projects = [
     techs: ['Photoshop', 'Photo Editing'],
     imageUrl: img('carImg.jpg'),
     animColor: '#38bdf8',
-    githubUrl: '',
+    githubUrl: 'https://github.com/Daisy6988/images/blob/main/carImg.jpg',
     demoUrl: '',
   },
 ]
