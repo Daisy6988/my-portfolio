@@ -1,59 +1,41 @@
 <template>
   <article class="project-card" :style="{ '--anim-color': project.animColor || '#6db56d' }" tabindex="0"
     :aria-label="`作品：${project.title}`">
-    <!-- 圖片區 / 無圖顯示 Cubes 動畫 -->
     <div class="card-media" aria-hidden="true">
       <template v-if="project.imageUrl">
-        <img 
-        :src="project.imageUrl" 
-        :alt="project.title + ' 作品'" 
-        class="card-img" 
-        loading="lazy" />
+        <img :src="project.imageUrl" :alt="project.title + ' 作品'" class="card-img" loading="lazy" />
       </template>
       <template v-else>
         <div class="card-placeholder">
           <CubesLoader />
         </div>
       </template>
-
-      <!-- hover 展開角落遮罩 -->
       <div class="card-overlay" aria-hidden="true">
         <p class="overlay-desc">{{ project.description }}</p>
       </div>
     </div>
 
-    <!-- 內容區 -->
     <div class="card-body">
       <div class="card-header">
         <h3 class="card-title">{{ project.title }}</h3>
-        <span class="card-status" :class="project.status === '完成' ? 'status-done' : 'status-wip'">{{ project.status
-          }}</span>
+        <span class="card-status" :class="project.status === '完成' ? 'status-done' : 'status-wip'">{{ project.status }}</span>
       </div>
-
       <p class="card-desc">{{ project.description }}</p>
-
-      <!-- 技術標籤 -->
       <ul class="card-techs" aria-label="使用技術">
         <li v-for="tech in project.techs" :key="tech" class="tech-tag">{{ tech }}</li>
       </ul>
-
-      <!-- 連結按鈕 -->
       <div class="card-links">
         <a v-if="project.githubUrl" :href="project.githubUrl" target="_blank" rel="noopener noreferrer" class="app-btn"
           :aria-label="`${project.title} GitHub 原始碼`">
           <span><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</span>
         </a>
-        <span v-else class="btn-disabled" aria-label="GitHub 連結暫無提供">
-          <span><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</span>
-        </span>
+        <span v-else class="btn-disabled"><span><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</span></span>
 
         <a v-if="project.demoUrl" :href="project.demoUrl" target="_blank" rel="noopener noreferrer"
           class="app-btn btn-demo" :aria-label="`${project.title} 線上展示`">
           <span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> Demo</span>
         </a>
-        <span v-else class="btn-disabled" aria-label="Demo 連結暫無提供">
-          <span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> Demo</span>
-        </span>
+        <span v-else class="btn-disabled"><span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> Demo</span></span>
       </div>
     </div>
   </article>
@@ -77,6 +59,7 @@ defineProps({
   flex-direction: column;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 1.5px solid #e8e4d9;
+  min-width: 0; /* 防止 grid 炸開 */
 }
 
 .project-card:hover,
@@ -85,11 +68,10 @@ defineProps({
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.13);
 }
 
-/* ---- 媒體區 ---- */
 .card-media {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: clamp(150px, 20vw, 200px);
   overflow: hidden;
   background: #f0f0e8;
 }
@@ -115,7 +97,6 @@ defineProps({
   background: linear-gradient(135deg, #f0f4e8 0%, #e8f0f4 100%);
 }
 
-/* ---- hover 展開角落 ---- */
 .card-overlay {
   position: absolute;
   inset: 0;
@@ -139,43 +120,36 @@ defineProps({
 }
 
 .card-overlay::before {
-  top: 0;
-  right: 0;
+  top: 0; right: 0;
   border-radius: 0 16px 0 100%;
 }
 
 .card-overlay::after {
-  bottom: 0;
-  left: 0;
+  bottom: 0; left: 0;
   border-radius: 0 100% 0 16px;
 }
 
 .project-card:hover .card-overlay,
-.project-card:focus-within .card-overlay {
-  opacity: 1;
-}
+.project-card:focus-within .card-overlay { opacity: 1; }
 
 .project-card:hover .card-overlay::before,
 .project-card:focus-within .card-overlay::before,
 .project-card:hover .card-overlay::after,
 .project-card:focus-within .card-overlay::after {
-  width: 100%;
-  height: 100%;
-  border-radius: 0;
+  width: 100%; height: 100%; border-radius: 0;
 }
 
 .overlay-desc {
   color: #fff;
-  font-size: 0.9rem;
+  font-size: clamp(0.78rem, 1vw, 0.9rem);
   line-height: 1.7;
   text-align: center;
   z-index: 2;
   position: relative;
 }
 
-/* ---- 內容區 ---- */
 .card-body {
-  padding: 1.2rem 1.4rem 1.4rem;
+  padding: clamp(0.8rem, 1.5vw, 1.2rem) clamp(0.8rem, 1.5vw, 1.4rem);
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -190,7 +164,7 @@ defineProps({
 }
 
 .card-title {
-  font-size: 1rem;
+  font-size: clamp(0.875rem, 1.2vw, 1.25rem);
   font-weight: 700;
   color: #2d3748;
   line-height: 1.4;
@@ -206,18 +180,11 @@ defineProps({
   flex-shrink: 0;
 }
 
-.status-done {
-  background: #d1fae5;
-  color: #065f46;
-}
-
-.status-wip {
-  background: #fef3c7;
-  color: #92400e;
-}
+.status-done { background: #d1fae5; color: #065f46; }
+.status-wip  { background: #fef3c7; color: #92400e; }
 
 .card-desc {
-  font-size: 0.82rem;
+  font-size: clamp(0.875rem, 1vw, 1.25rem);
   color: #718096;
   line-height: 1.6;
   margin: 0;
@@ -227,7 +194,6 @@ defineProps({
   overflow: hidden;
 }
 
-/* 技術標籤 */
 .card-techs {
   display: flex;
   flex-wrap: wrap;
@@ -238,7 +204,7 @@ defineProps({
 }
 
 .tech-tag {
-  font-size: 0.7rem;
+  font-size: clamp(0.8rem, 0.9vw, 1.25rem);
   background: #f0f4e8;
   color: #4a6741;
   border: 1px solid #c8d8b8;
@@ -247,7 +213,6 @@ defineProps({
   font-weight: 500;
 }
 
-/* 連結按鈕 */
 .card-links {
   display: flex;
   gap: 0.6rem;
@@ -282,11 +247,7 @@ defineProps({
   right: 0;
 }
 
-.app-btn:hover::after {
-  right: auto;
-  left: 0;
-  width: 100%;
-}
+.app-btn:hover::after { right: auto; left: 0; width: 100%; }
 
 .app-btn span {
   display: flex;
@@ -302,26 +263,11 @@ defineProps({
   position: relative;
 }
 
-.app-btn:hover span {
-  color: #183153;
-}
+.app-btn:hover span { color: #183153; }
 
-.app-btn:focus-visible {
-  outline: 3px solid #ffd401;
-  outline-offset: 2px;
-}
-
-.btn-demo {
-  background: #4a6741;
-}
-
-.btn-demo::after {
-  background: #ffd401;
-}
-
-.btn-demo:hover span {
-  color: #2d3748;
-}
+.btn-demo { background: #4a6741; }
+.btn-demo::after { background: #ffd401; }
+.btn-demo:hover span { color: #2d3748; }
 
 .btn-disabled {
   display: inline-flex;

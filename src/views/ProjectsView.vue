@@ -61,101 +61,102 @@ onBeforeUnmount(() => window.removeEventListener('resize', onResize));
 
 <template>
   <div class="projects-page">
-    <header class="projects-header">
-      <h1>作品集</h1>
-      <p>〔在數位森林裡所創造的每一個小實驗〕</p>
-      <div class="filter-btns">
-        <AppButton label="全部" :variant="currentFilter === 'ALL' ? 'primary' : 'secondary'"
-          @click="setFilter('ALL')" />
-        <AppButton label="前端開發" :variant="currentFilter === 'FRONTEND' ? 'primary' : 'secondary'"
-          @click="setFilter('FRONTEND')" />
-        <AppButton label="UI/UX 設計" :variant="currentFilter === 'DESIGN' ? 'primary' : 'secondary'"
-          @click="setFilter('DESIGN')" />
+    <div class="projects-inner">
+      <header class="projects-header">
+        <h1>作品集</h1>
+        <p>【在數位森林裡所創造的每一個小實驗】</p>
+        <div class="filter-btns">
+          <AppButton label="全部" :variant="currentFilter === 'ALL' ? 'primary' : 'secondary'"
+            @click="setFilter('ALL')" />
+          <AppButton label="前端開發" :variant="currentFilter === 'FRONTEND' ? 'primary' : 'secondary'"
+            @click="setFilter('FRONTEND')" />
+          <AppButton label="UI/UX 設計" :variant="currentFilter === 'DESIGN' ? 'primary' : 'secondary'"
+            @click="setFilter('DESIGN')" />
+        </div>
+      </header>
+
+      <main v-if="!isMobile" class="projects-grid">
+        <ProjectCard v-for="item in filteredProjects" :key="item.id" :project="item" />
+      </main>
+
+      <div v-else class="swiper-wrapper-outer">
+        <Swiper
+          :slides-per-view="1.1"
+          :space-between="10"
+          :centered-slides="true"
+          :modules="modules"
+          class="projects-swiper"
+          @swiper="onProjectsSwiper"
+          @slideChange="onProjectsSlideChange"
+        >
+          <SwiperSlide v-for="item in filteredProjects" :key="item.id">
+            <ProjectCard :project="item" />
+          </SwiperSlide>
+        </Swiper>
+        <div ref="projectsPagination" class="custom-pagination"></div>
       </div>
-    </header>
-
-    <!-- 桌機 + 平板：grid -->
-    <main v-if="!isMobile" class="projects-grid">
-      <ProjectCard v-for="item in filteredProjects" :key="item.id" :project="item" />
-    </main>
-
-    <!-- 手機：swiper -->
-    <div v-else class="swiper-wrapper-outer">
-      <Swiper
-        :slides-per-view="'auto'"
-        :space-between="12"
-        :centered-slides="true"
-        :modules="modules"
-        class="projects-swiper"
-        @swiper="onProjectsSwiper"
-        @slideChange="onProjectsSlideChange"
-      >
-        <SwiperSlide v-for="item in filteredProjects" :key="item.id">
-          <ProjectCard :project="item" />
-        </SwiperSlide>
-      </Swiper>
-      <div ref="projectsPagination" class="custom-pagination"></div>
     </div>
   </div>
 </template>
 
 <style scoped>
 .projects-page {
-  padding: 80px 5%;
   background-color: #fdfaf6;
   background-image: radial-gradient(#e6e3da 1px, transparent 1px);
   background-size: 40px 40px;
   min-height: 100vh;
+  overflow-x: hidden; /* 防止水平爆版 */
   box-sizing: border-box;
+  width: 100%;
+}
+
+.projects-inner {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: clamp(60px, 8vw, 100px) clamp(1rem, 5%, 3rem) clamp(40px, 5vw, 60px);
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .projects-header {
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: clamp(30px, 4vw, 50px);
 }
 
 .projects-header h1 {
   color: #5d734a;
-  font-size: 3rem;
+  font-size: clamp(2rem, 4vw, 3rem);
   margin-bottom: 10px;
 }
 
 .projects-header p {
   color: #29470b;
-  font-size: 1.5rem;
+  font-size: clamp(1rem, 1.5vw, 1.5rem);
 }
 
 .filter-btns {
   margin-top: 24px;
   display: flex;
   justify-content: center;
-  gap: 14px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
-/* ── 桌機 grid ── */
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
-  max-width: 1200px;
-  margin: 0 auto;
+  gap: clamp(16px, 2vw, 30px);
   width: 100%;
   box-sizing: border-box;
 }
 
-@media (max-width: 1024px) {
-  .projects-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
+@media (max-width: 1024px) { .projects-grid { grid-template-columns: repeat(2, 1fr); } }
 
 /* ── 手機 swiper ── */
 .swiper-wrapper-outer {
-  padding: 0 0 0;
-  box-sizing: border-box;
-  overflow: hidden;
   width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .projects-swiper {
@@ -165,13 +166,12 @@ onBeforeUnmount(() => window.removeEventListener('resize', onResize));
 }
 
 .projects-swiper :deep(.swiper-slide) {
-  width: 85vw;
+  width: calc(100vw - 48px);
   max-width: 340px;
   height: auto;
   box-sizing: border-box;
 }
 
-/* ── 分頁器 ── */
 .custom-pagination {
   display: flex;
   align-items: center;
@@ -182,8 +182,7 @@ onBeforeUnmount(() => window.removeEventListener('resize', onResize));
 
 .custom-pagination :deep(.pg-dot) {
   display: inline-block;
-  width: 14px;
-  height: 14px;
+  width: 14px; height: 14px;
   border-radius: 50%;
   background: #e8a020;
   flex-shrink: 0;
@@ -201,19 +200,12 @@ onBeforeUnmount(() => window.removeEventListener('resize', onResize));
   line-height: 1;
 }
 
-/* ── 手機 header padding ── */
 @media (max-width: 640px) {
-  .projects-page {
-    padding: 80px 0 0;
+  .projects-inner {
+    padding: 60px 0 40px;
   }
   .projects-header {
-    padding: 0 20px;
-  }
-  .projects-header h1 {
-    font-size: 2.2rem;
-  }
-  .projects-header p {
-    font-size: 0.95rem;
+    padding: 0 16px;
   }
 }
 </style>
