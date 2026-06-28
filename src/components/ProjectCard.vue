@@ -6,9 +6,7 @@
         <img :src="project.imageUrl" :alt="project.title + ' 作品'" class="card-img" loading="lazy" />
       </template>
       <template v-else>
-        <div class="card-placeholder">
-          <CubesLoader />
-        </div>
+        <div class="card-placeholder"><CubesLoader /></div>
       </template>
       <div class="card-overlay" aria-hidden="true">
         <p class="overlay-desc">{{ project.description }}</p>
@@ -29,13 +27,12 @@
           :aria-label="`${project.title} GitHub 原始碼`">
           <span><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</span>
         </a>
-        <span v-else class="btn-disabled"><span><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</span></span>
-
+        <span v-else class="btn-disabled"><span><i class="fa-brands fa-github"></i> GitHub</span></span>
         <a v-if="project.demoUrl" :href="project.demoUrl" target="_blank" rel="noopener noreferrer"
           class="app-btn btn-demo" :aria-label="`${project.title} 線上展示`">
           <span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> Demo</span>
         </a>
-        <span v-else class="btn-disabled"><span><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> Demo</span></span>
+        <span v-else class="btn-disabled"><span><i class="fa-solid fa-arrow-up-right-from-square"></i> Demo</span></span>
       </div>
     </div>
   </article>
@@ -43,9 +40,7 @@
 
 <script setup>
 import CubesLoader from './CubesLoader.vue'
-defineProps({
-  project: { type: Object, required: true },
-})
+defineProps({ project: { type: Object, required: true } })
 </script>
 
 <style scoped>
@@ -53,81 +48,60 @@ defineProps({
   position: relative;
   border-radius: 16px;
   background: #fffef9;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 1.5px solid #e8e4d9;
-  min-width: 0; /* 防止 grid 炸開 */
+  min-width: 0;
+  height: 100%; /* 讓 grid 同列等高 */
 }
 
 .project-card:hover,
 .project-card:focus-within {
   transform: translateY(-6px);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.13);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.13);
 }
 
 .card-media {
   position: relative;
   width: 100%;
-  height: clamp(150px, 20vw, 200px);
+  height: 180px; /* 固定圖片高度 */
   overflow: hidden;
   background: #f0f0e8;
+  flex-shrink: 0;
 }
 
 .card-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
   transition: transform 0.4s ease;
 }
-
-.project-card:hover .card-img {
-  transform: scale(1.05);
-}
+.project-card:hover .card-img { transform: scale(1.05); }
 
 .card-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
   background: linear-gradient(135deg, #f0f4e8 0%, #e8f0f4 100%);
 }
 
 .card-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(24, 49, 83, 0.88);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-  opacity: 0;
+  position: absolute; inset: 0;
+  background: rgba(24,49,83,0.88);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.5rem; opacity: 0;
   transition: opacity 0.4s ease;
 }
 
-.card-overlay::before,
-.card-overlay::after {
-  position: absolute;
-  content: '';
-  width: 20%;
-  height: 20%;
+.card-overlay::before, .card-overlay::after {
+  position: absolute; content: '';
+  width: 20%; height: 20%;
   background: var(--anim-color);
   transition: all 0.5s ease;
 }
-
-.card-overlay::before {
-  top: 0; right: 0;
-  border-radius: 0 16px 0 100%;
-}
-
-.card-overlay::after {
-  bottom: 0; left: 0;
-  border-radius: 0 100% 0 16px;
-}
+.card-overlay::before { top:0; right:0; border-radius: 0 16px 0 100%; }
+.card-overlay::after  { bottom:0; left:0; border-radius: 0 100% 0 16px; }
 
 .project-card:hover .card-overlay,
 .project-card:focus-within .card-overlay { opacity: 1; }
@@ -140,54 +114,38 @@ defineProps({
 }
 
 .overlay-desc {
-  color: #fff;
-  font-size: clamp(0.78rem, 1vw, 0.9rem);
-  line-height: 1.7;
-  text-align: center;
-  z-index: 2;
-  position: relative;
+  color: #fff; font-size: 0.88rem;
+  line-height: 1.7; text-align: center;
+  z-index: 2; position: relative;
 }
 
 .card-body {
-  padding: clamp(0.8rem, 1.5vw, 1.2rem) clamp(0.8rem, 1.5vw, 1.4rem);
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  flex: 1;
+  padding: 1rem 1.1rem 1.2rem;
+  display: flex; flex-direction: column;
+  gap: 0.5rem; flex: 1;
 }
 
 .card-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.5rem;
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 0.5rem;
 }
 
 .card-title {
-  font-size: clamp(0.875rem, 1.2vw, 1.25rem);
-  font-weight: 700;
-  color: #2d3748;
-  line-height: 1.4;
-  margin: 0;
+  font-size: 0.95rem; font-weight: 700;
+  color: #2d3748; line-height: 1.4; margin: 0;
 }
 
 .card-status {
-  font-size: 0.7rem;
-  font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 20px;
-  white-space: nowrap;
-  flex-shrink: 0;
+  font-size: 0.68rem; font-weight: 600;
+  padding: 2px 8px; border-radius: 20px;
+  white-space: nowrap; flex-shrink: 0;
 }
-
 .status-done { background: #d1fae5; color: #065f46; }
 .status-wip  { background: #fef3c7; color: #92400e; }
 
 .card-desc {
-  font-size: clamp(0.875rem, 1vw, 1.25rem);
-  color: #718096;
-  line-height: 1.6;
-  margin: 0;
+  font-size: 0.8rem; color: #718096;
+  line-height: 1.6; margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -195,74 +153,44 @@ defineProps({
 }
 
 .card-techs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  display: flex; flex-wrap: wrap;
+  gap: 0.3rem; list-style: none;
+  padding: 0; margin: 0;
 }
 
 .tech-tag {
-  font-size: clamp(0.8rem, 0.9vw, 1.25rem);
-  background: #f0f4e8;
-  color: #4a6741;
+  font-size: 0.68rem;
+  background: #f0f4e8; color: #4a6741;
   border: 1px solid #c8d8b8;
-  border-radius: 4px;
-  padding: 2px 8px;
-  font-weight: 500;
+  border-radius: 4px; padding: 2px 8px; font-weight: 500;
 }
 
 .card-links {
-  display: flex;
-  gap: 0.6rem;
-  margin-top: auto;
-  padding-top: 0.4rem;
-  flex-wrap: wrap;
+  display: flex; gap: 0.6rem;
+  margin-top: auto; padding-top: 0.4rem;
 }
 
 .app-btn {
-  position: relative;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  background: #183153;
-  font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
-  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
-  cursor: pointer;
-  border: none;
-  text-decoration: none;
-  flex: 1;
+  position: relative; display: inline-flex;
+  justify-content: center; align-items: center;
+  border-radius: 5px; background: #183153;
+  box-shadow: 0px 4px 14px rgba(0,0,0,0.15);
+  overflow: hidden; cursor: pointer;
+  border: none; text-decoration: none; flex: 1;
 }
-
 .app-btn::after {
-  content: '';
-  width: 0%;
-  height: 100%;
-  background: #ffd401;
-  position: absolute;
-  transition: all 0.4s ease-in-out;
-  right: 0;
+  content: ''; width: 0%; height: 100%;
+  background: #ffd401; position: absolute;
+  transition: all 0.4s ease-in-out; right: 0;
 }
-
 .app-btn:hover::after { right: auto; left: 0; width: 100%; }
-
 .app-btn span {
-  display: flex;
-  align-items: center;
-  gap: 0.35em;
-  padding: 8px 14px;
-  color: #fff;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  z-index: 20;
-  transition: color 0.3s ease-in-out;
-  position: relative;
+  display: flex; align-items: center; gap: 0.35em;
+  padding: 8px 12px; color: #fff;
+  font-size: 0.76rem; font-weight: 700;
+  letter-spacing: 0.08em; z-index: 20;
+  transition: color 0.3s ease-in-out; position: relative;
 }
-
 .app-btn:hover span { color: #183153; }
 
 .btn-demo { background: #4a6741; }
@@ -270,23 +198,13 @@ defineProps({
 .btn-demo:hover span { color: #2d3748; }
 
 .btn-disabled {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  background: #d1d5db;
-  flex: 1;
-  cursor: not-allowed;
+  display: inline-flex; justify-content: center;
+  align-items: center; border-radius: 5px;
+  background: #d1d5db; flex: 1; cursor: not-allowed;
 }
-
 .btn-disabled span {
-  display: flex;
-  align-items: center;
-  gap: 0.35em;
-  padding: 8px 14px;
-  color: #9ca3af;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  display: flex; align-items: center; gap: 0.35em;
+  padding: 8px 12px; color: #9ca3af;
+  font-size: 0.76rem; font-weight: 700;
 }
 </style>

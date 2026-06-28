@@ -70,7 +70,7 @@ async function openContact() {
   <nav class="navbar">
     <div class="logo-container" @click="navTo('/')">
       <div class="logo-text">Daisy's Portfolio</div>
-      <img src="@/assets/qrcode_daisy6988.github.io.png" alt="QR Code" class="nav-qrcode">
+     
     </div>
 
     <!-- 桌機選單 -->
