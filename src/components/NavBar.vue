@@ -6,10 +6,10 @@
     <div class="nav-links" :class="{ open: menuOpen }">
       <!-- 手機時的關閉按鈕 -->
       <button class="close-btn" @click="menuOpen = false" aria-label="關閉選單">✕</button>
-      <span class="nav-item" @click="navTo('/')">首頁</span>
-      <span class="nav-item" @click="navTo('/skills')">技能</span>
-      <span class="nav-item" @click="navTo('/projects')">作品</span>
-      <span class="nav-item" @click="openContact">聯絡我</span>
+      <span class="nav-item" @click="navTo('/')"><i class="fa-solid fa-shield-dog nav-icon"></i>首頁</span>
+      <span class="nav-item" @click="navTo('/skills')"><i class="fa-solid fa-shield-dog nav-icon"></i>技能</span>
+      <span class="nav-item" @click="navTo('/projects')"><i class="fa-solid fa-shield-dog nav-icon"></i>作品</span>
+      <span class="nav-item" @click="openContact"><i class="fa-solid fa-shield-dog nav-icon"></i>聯絡我</span>
     </div>
 
     <!-- 漢堡按鈕（手機才顯示） -->
@@ -163,6 +163,11 @@ async function openContact() {
 .nav-item:hover { color: #3e5c35; }
 .nav-item:hover::after { width: 100%; }
 
+/* icon 桌機隱藏 */
+.nav-icon {
+  display: none;
+}
+
 /* ── 漢堡按鈕 ── */
 .hamburger {
   display: none;
@@ -229,18 +234,17 @@ async function openContact() {
   }
 
   .nav-links {
-    /* 預設隱藏，open 時展開 */
     position: fixed;
     top: 0;
     right: -100%;
-    width: 70vw;
-    max-width: 260px;
+    width: 50vw;        /* 約一半寬度 */
+    max-width: 200px;
     height: 100vh;
     background: #e8f5e9;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    padding: 24px 28px;
+    padding: 20px 24px;
     gap: 28px;
     box-shadow: -4px 0 20px rgba(0,0,0,0.1);
     transition: right 0.3s ease;
@@ -265,6 +269,26 @@ async function openContact() {
 
   .nav-item {
     font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-icon {
+    display: inline-block;
+    color: #4caf7d;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  /* 手機版 hover 底線（touch 裝置用 active 觸發） */
+  .nav-item:active::after,
+  .nav-item:hover::after {
+    width: 100%;
+  }
+  .nav-item:active,
+  .nav-item:hover {
+    color: #3e5c35;
   }
 
   .marquee-bar { top: 52px; }
