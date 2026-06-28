@@ -137,46 +137,7 @@ async function openContact() {
   white-space: nowrap;
 }
 
-/* 新增：限制 QR Code 大小 */
-.nav-qrcode {
-  width: 35px;
-  /* 根據你的需求調整大小 */
-  height: 35px;
-  object-fit: contain;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-  border-radius: 4px;
-  /* 可選：讓 QR Code 邊角圓潤一點，看起來更精緻 */
-}
 
-.nav-qrcode:hover {
-  transform: scale(1.5);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  /* 加入一點陰影增加層次感 */
-  z-index: 1001;
-  /* 確保放大時浮在最上層 */
-}
-
-@media (max-width: 640px) {
-  .nav-qrcode:hover {
-    transform: none;
-    /* 手機版不放大 */
-    box-shadow: none;
-  }
-}
-
-/* 移除原本舊的 .logo 樣式，改用上面的 .logo-container */
-/* .logo { ... }  <-- 可以刪除或註解掉 */
-
-/* .logo {
-  font-family: 'Times New Roman', cursive;
-  font-size: clamp(1.2rem, 3vw, 2rem);
-  color: #5d734a;
-  cursor: pointer;
-  white-space: nowrap;
-  font-weight: 700;
-  margin-left: clamp(0.5rem, 2%, 2rem);
-} */
 
 /* ── 桌機選單 ── */
 .nav-links {
