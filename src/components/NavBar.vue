@@ -1,37 +1,3 @@
-<template>
-  <nav class="navbar">
-    <div class="logo" @click="navTo('/')">Daisy's Portfolio</div>
-
-    <!-- 桌機選單 -->
-    <div class="nav-links" :class="{ open: menuOpen }">
-      <!-- 手機時的關閉按鈕 -->
-      <button class="close-btn" @click="menuOpen = false" aria-label="關閉選單">✕</button>
-      <span class="nav-item" @click="navTo('/')"><i class="fa-solid fa-shield-dog nav-icon"></i>首頁</span>
-      <span class="nav-item" @click="navTo('/skills')"><i class="fa-solid fa-shield-dog nav-icon"></i>技能</span>
-      <span class="nav-item" @click="navTo('/projects')"><i class="fa-solid fa-shield-dog nav-icon"></i>作品</span>
-      <span class="nav-item" @click="openContact"><i class="fa-solid fa-shield-dog nav-icon"></i>聯絡我</span>
-    </div>
-
-    <!-- 漢堡按鈕（手機才顯示） -->
-    <button class="hamburger" @click="menuOpen = !menuOpen" aria-label="開啟選單">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-  </nav>
-
-  <!-- 跑馬燈 -->
-  <div class="marquee-bar">
-    <div class="marquee-track">
-      <span v-for="(skill, i) in marqueeItems" :key="i" class="marquee-item">
-        <i :class="skill.icon" aria-hidden="true"></i>
-        {{ skill.title }}
-        <span class="marquee-dot">✦</span>
-      </span>
-    </div>
-  </div>
-</template>
-
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -100,6 +66,45 @@ async function openContact() {
 }
 </script>
 
+<template>
+  <nav class="navbar">
+    <div class="logo-container" @click="navTo('/')">
+      <div class="logo-text">Daisy's Portfolio</div>
+      <img src="@/assets/qrcode_daisy6988.github.io.png" alt="QR Code" class="nav-qrcode">
+    </div>
+
+    <!-- 桌機選單 -->
+    <div class="nav-links" :class="{ open: menuOpen }">
+      <!-- 手機時的關閉按鈕 -->
+      <button class="close-btn" @click="menuOpen = false" aria-label="關閉選單">✕</button>
+      <span class="nav-item" @click="navTo('/')"><i class="fa-solid fa-shield-dog nav-icon"></i>首頁</span>
+      <span class="nav-item" @click="navTo('/skills')"><i class="fa-solid fa-shield-dog nav-icon"></i>技能</span>
+      <span class="nav-item" @click="navTo('/projects')"><i class="fa-solid fa-shield-dog nav-icon"></i>作品</span>
+      <span class="nav-item" @click="openContact"><i class="fa-solid fa-shield-dog nav-icon"></i>聯絡我</span>
+    </div>
+
+    <!-- 漢堡按鈕（手機才顯示） -->
+    <button class="hamburger" @click="menuOpen = !menuOpen" aria-label="開啟選單">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- 跑馬燈 -->
+  <div class="marquee-bar">
+    <div class="marquee-track">
+      <span v-for="(skill, i) in marqueeItems" :key="i" class="marquee-item">
+        <i :class="skill.icon" aria-hidden="true"></i>
+        {{ skill.title }}
+        <span class="marquee-dot">✦</span>
+      </span>
+    </div>
+  </div>
+</template>
+
+
+
 <style scoped>
 .navbar {
   display: flex;
@@ -113,7 +118,57 @@ async function openContact() {
   border-bottom: 1px solid #c8e6c9;
 }
 
-.logo {
+/* 新增：讓文字與圖片水平排列 */
+.logo-container {
+  display: flex;
+  align-items: center;
+  /* 垂直置中 */
+  gap: 12px;
+  /* 文字與 QR Code 的間距 */
+  cursor: pointer;
+  margin-left: clamp(0.5rem, 2%, 2rem);
+}
+
+.logo-text {
+  font-family: 'Times New Roman', cursive;
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  color: #5d734a;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* 新增：限制 QR Code 大小 */
+.nav-qrcode {
+  width: 35px;
+  /* 根據你的需求調整大小 */
+  height: 35px;
+  object-fit: contain;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  border-radius: 4px;
+  /* 可選：讓 QR Code 邊角圓潤一點，看起來更精緻 */
+}
+
+.nav-qrcode:hover {
+  transform: scale(1.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  /* 加入一點陰影增加層次感 */
+  z-index: 1001;
+  /* 確保放大時浮在最上層 */
+}
+
+@media (max-width: 640px) {
+  .nav-qrcode:hover {
+    transform: none;
+    /* 手機版不放大 */
+    box-shadow: none;
+  }
+}
+
+/* 移除原本舊的 .logo 樣式，改用上面的 .logo-container */
+/* .logo { ... }  <-- 可以刪除或註解掉 */
+
+/* .logo {
   font-family: 'Times New Roman', cursive;
   font-size: clamp(1.2rem, 3vw, 2rem);
   color: #5d734a;
@@ -121,7 +176,7 @@ async function openContact() {
   white-space: nowrap;
   font-weight: 700;
   margin-left: clamp(0.5rem, 2%, 2rem);
-}
+} */
 
 /* ── 桌機選單 ── */
 .nav-links {
@@ -160,8 +215,13 @@ async function openContact() {
   transition: width 0.3s ease;
 }
 
-.nav-item:hover { color: #3e5c35; }
-.nav-item:hover::after { width: 100%; }
+.nav-item:hover {
+  color: #3e5c35;
+}
+
+.nav-item:hover::after {
+  width: 100%;
+}
 
 /* icon 桌機隱藏 */
 .nav-icon {
@@ -219,12 +279,25 @@ async function openContact() {
   white-space: nowrap;
 }
 
-.marquee-item i { font-size: 1rem; color: #87a96b; }
-.marquee-dot { color: #4caf7d; font-size: 0.6rem; margin-left: 12px; }
+.marquee-item i {
+  font-size: 1rem;
+  color: #87a96b;
+}
+
+.marquee-dot {
+  color: #4caf7d;
+  font-size: 0.6rem;
+  margin-left: 12px;
+}
 
 @keyframes marquee-scroll {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 /* ── 手機：漢堡選單 ── */
@@ -237,7 +310,8 @@ async function openContact() {
     position: fixed;
     top: 0;
     right: -100%;
-    width: 50vw;        /* 約一半寬度 */
+    width: 50vw;
+    /* 約一半寬度 */
     max-width: 200px;
     height: 100vh;
     background: #e8f5e9;
@@ -246,7 +320,7 @@ async function openContact() {
     justify-content: flex-start;
     padding: 20px 24px;
     gap: 28px;
-    box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
     transition: right 0.3s ease;
     z-index: 1100;
   }
@@ -286,12 +360,19 @@ async function openContact() {
   .nav-item:hover::after {
     width: 100%;
   }
+
   .nav-item:active,
   .nav-item:hover {
     color: #3e5c35;
   }
 
-  .marquee-bar { top: 52px; }
-  .marquee-item { font-size: 0.78rem; padding: 0 14px; }
+  .marquee-bar {
+    top: 52px;
+  }
+
+  .marquee-item {
+    font-size: 0.78rem;
+    padding: 0 14px;
+  }
 }
 </style>
