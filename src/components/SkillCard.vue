@@ -22,16 +22,18 @@ defineProps({
   background: #fffef9;
   border: 1.5px solid #e8e4d9;
   border-radius: 16px;
-  padding: clamp(1rem, 2vw, 1.6rem) clamp(0.8rem, 1.5vw, 1.4rem);
+  padding: 1.2rem 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 0.6rem;
+  gap: 0.5rem;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: default;
   box-sizing: border-box;
-  min-width: 0; /* 防止 grid 炸開 */
+  min-width: 0;
+  /* 手機固定高度讓每張一樣高 */
+  height: 100%;
 }
 
 .skill-card:hover,
@@ -52,14 +54,14 @@ defineProps({
 }
 
 .skill-title {
-  font-size: clamp(0.875rem, 1.2vw, 1.25rem);
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
   font-weight: 700;
   color: #2d3748;
   margin: 0;
 }
 
 .skill-desc {
-  font-size: clamp(0.875rem, 1vw, 1.25rem);
+  font-size: clamp(0.78rem, 1vw, 0.85rem);
   color: #718096;
   line-height: 1.6;
   margin: 0;
@@ -77,7 +79,7 @@ defineProps({
 }
 
 .skill-tag {
-  font-size: clamp(0.8rem, 0.9vw, 1.25rem);
+  font-size: clamp(0.68rem, 0.9vw, 0.72rem);
   background: #f0f4e8;
   color: #4a6741;
   border: 1px solid #c8d8b8;
