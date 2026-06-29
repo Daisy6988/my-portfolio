@@ -1,5 +1,6 @@
 <script setup>
 import { useRouter } from 'vue-router';
+import { onMounted } from 'vue';
 import { skills, projects } from '@/data/portfolioData.js';
 import AppButton from '@/components/AppButton.vue';
 import SkillCard from '@/components/SkillCard.vue';
@@ -9,8 +10,7 @@ import qrcode from '@/assets/qrcode.png';
 const router = useRouter();
 const heroBg = `url(${import.meta.env.BASE_URL}images/forest.jpg)`;
 
-// IntersectionObserver：滾到時從右滑入
-function useSlideIn(selector) {
+onMounted(() => {
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach(entry => {
@@ -20,21 +20,14 @@ function useSlideIn(selector) {
         }
       });
     },
-    { threshold: 0.15 }
+    { threshold: 0.12 }
   );
-  return observer;
-}
-
-import { onMounted } from 'vue';
-onMounted(() => {
-  const obs = useSlideIn();
-  document.querySelectorAll('.slide-target').forEach(el => obs.observe(el));
+  document.querySelectorAll('.slide-from-right, .slide-from-left').forEach(el => observer.observe(el));
 });
 </script>
 
 <template>
   <div class="home-page">
-    <!-- Hero -->
     <section id="about" class="hero-section" :style="{ backgroundImage: heroBg }">
       <div class="intro-box">
         <h1>Hi, 我是開發者-Daisy</h1>
@@ -53,16 +46,16 @@ onMounted(() => {
       </div>
     </section>
 
-    <!-- 技能：滾到時從右滑入 -->
-    <section id="skills" class="section-container slide-target">
+    <!-- 技能：從右滑入 -->
+    <section id="skills" class="section-container slide-from-right">
       <h2>我的技能</h2>
       <div class="grid-skills">
         <SkillCard v-for="skill in skills" :key="skill.title" :skill="skill" />
       </div>
     </section>
 
-    <!-- 作品：滾到時從右滑入 -->
-    <section id="projects" class="section-container slide-target">
+    <!-- 作品：從左滑入 -->
+    <section id="projects" class="section-container slide-from-left">
       <h2>精選作品</h2>
       <div class="grid-projects">
         <ProjectCard v-for="project in projects" :key="project.id" :project="project" />
@@ -77,19 +70,23 @@ onMounted(() => {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* 滑入動畫 */
-@keyframes slideInRight {
-  from { opacity: 0; transform: translateX(60px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-.slide-target {
+/* 從右滑入 */
+.slide-from-right {
   opacity: 0;
-  transform: translateX(60px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transform: translateX(70px);
+  transition: opacity 0.75s ease, transform 0.75s ease;
 }
 
-.slide-target.slide-in {
+/* 從左滑入 */
+.slide-from-left {
+  opacity: 0;
+  transform: translateX(-70px);
+  transition: opacity 0.75s ease, transform 0.75s ease;
+}
+
+/* 觸發後 */
+.slide-from-right.slide-in,
+.slide-from-left.slide-in {
   opacity: 1;
   transform: translateX(0);
 }
@@ -104,7 +101,6 @@ onMounted(() => {
   overflow-x: hidden;
 }
 
-/* ── Hero ── */
 .hero-section {
   height: 80vh;
   display: flex;
@@ -146,7 +142,7 @@ onMounted(() => {
   margin-top: 30px; flex-wrap: wrap;
 }
 
-/* ── QR Code 右下角 ── */
+/* QR Code */
 .qr-block {
   position: absolute;
   bottom: 24px; right: 24px;
@@ -165,22 +161,19 @@ onMounted(() => {
 
 .qr-label {
   font-size: 0.78rem;
-  color: #5d734a;
-  font-weight: 600;
+  color: #5d734a; font-weight: 600;
   font-family: 'Noto Sans TC', sans-serif;
   background: rgba(255,255,255,0.85);
-  padding: 2px 10px;
-  border-radius: 20px;
+  padding: 2px 10px; border-radius: 20px;
 }
 
-/* 手機上 QR 縮小 */
 @media (max-width: 480px) {
   .qr-img { width: 64px; height: 64px; }
   .qr-label { font-size: 0.68rem; }
   .qr-block { bottom: 16px; right: 16px; }
+  .action-buttons { gap: 12px; }
 }
 
-/* ── Section ── */
 .section-container {
   padding: clamp(2rem,5vw,4rem) clamp(1rem,5%,3rem);
   max-width: 1360px;
@@ -207,9 +200,5 @@ h2 {
   grid-template-columns: repeat(auto-fill, minmax(280px,1fr));
   gap: clamp(16px,2vw,30px);
   margin-top: 2rem;
-}
-
-@media (max-width: 480px) {
-  .action-buttons { gap: 12px; }
 }
 </style>
