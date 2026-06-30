@@ -11,6 +11,18 @@ const isMobile = ref(window.innerWidth <= 640);
 const skillsPagination = ref(null);
 let skillsSwiper = null;
 
+const base = import.meta.env.BASE_URL;
+
+// 波浪下方的小香菇裝飾
+function rnd(min, max) {
+  return Math.random() * (max - min) + min;
+}
+const waveMushrooms = Array.from({ length: 9 }, (_, i) => ({
+  id: i,
+  size: rnd(36, 64),
+  op: rnd(0.55, 0.85),
+}));
+
 function renderPagination(el, current, total) {
   if (!el) return;
   const NEIGHBORS = 3;
@@ -70,6 +82,28 @@ onBeforeUnmount(() => window.removeEventListener('resize', onResize));
       </div>
     </div>
     <div class="below-cards"></div>
+
+    <!-- 波浪轉場：狗狗底圖 → 香菇區 -->
+    <div class="wave-divider" aria-hidden="true">
+      <svg viewBox="0 0 1440 100" preserveAspectRatio="none" class="wave-svg">
+        <path
+          d="M0,40 C120,90 240,90 360,55 C480,20 600,20 720,50 C840,80 960,80 1080,45 C1200,10 1320,10 1440,40 L1440,100 L0,100 Z"
+        />
+      </svg>
+    </div>
+
+    <!-- 香菇區 -->
+    <div class="mushroom-band">
+      <img
+        v-for="m in waveMushrooms"
+        :key="m.id"
+        :src="`${base}images/mushroomImg.png`"
+        :style="{ width: m.size + 'px', opacity: m.op }"
+        class="wave-mushroom-img"
+        alt=""
+        aria-hidden="true"
+      />
+    </div>
   </div>
 </template>
 
@@ -163,8 +197,55 @@ onBeforeUnmount(() => window.removeEventListener('resize', onResize));
   color: #b87800; min-width: 20px; line-height: 1;
 }
 
+/* ── 波浪轉場 ── */
+.wave-divider {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  line-height: 0;
+  margin-top: -1px; /* 避免接縫出現細線 */
+}
+
+.wave-svg {
+  display: block;
+  width: 100%;
+  height: clamp(50px, 8vw, 100px);
+}
+
+.wave-svg path {
+  fill: #fdfaf6; /* 與下方香菇區背景同色，形成轉場 */
+}
+
+/* ── 香菇區 ── */
+.mushroom-band {
+  position: relative;
+  z-index: 3;
+  background: #fdfaf6;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  flex-wrap: nowrap;
+  gap: 4px;
+  padding: 0 16px 16px;
+  box-sizing: border-box;
+}
+
+.wave-mushroom-img {
+  display: block;
+  min-width: 18px;
+  max-width: 64px;
+  object-fit: contain;
+  filter:
+    grayscale(1)
+    sepia(1)
+    saturate(2.5)
+    hue-rotate(-20deg)
+    brightness(1.05);
+}
+
 @media (max-width: 640px) {
   .skills-inner { padding: 60px 0 40px; }
   .skills-header { padding: 0 16px; }
+  .wave-mushroom-img { min-width: 14px; }
 }
 </style>

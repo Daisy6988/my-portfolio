@@ -271,19 +271,22 @@ async function openContact() {
     position: fixed;
     top: 0;
     right: -100%;
-    width: 50vw;
-    /* 約一半寬度 */
-    max-width: 200px;
+    width: 60vw;
+    /* 比原本寬一點，讓弧形有空間凸出 */
+    max-width: 240px;
     height: 100vh;
     background: #e8f5e9;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    padding: 20px 24px;
+    padding: 20px 24px 20px 120px;
+    /* 左側留白，避免文字被弧形邊裁切 */
     gap: 28px;
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
     transition: right 0.3s ease;
     z-index: 1100;
+    /* 左半邊呈半圓弧狀，右邊維持直線 */
+    border-radius: 50% 0 0 50% / 50% 0 0 50%;
   }
 
   .nav-links.open {
@@ -295,24 +298,25 @@ async function openContact() {
     align-self: flex-end;
     background: none;
     border: none;
-    font-size: 1.4rem;
+    font-size: 2rem;
     color: #5d734a;
     cursor: pointer;
-    padding: 0;
+    padding: 6px;
     margin-bottom: 8px;
   }
 
   .nav-item {
-    font-size: 1.1rem;
+    font-size: 1.4rem;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    padding: 10px 0;
   }
 
   .nav-icon {
     display: inline-block;
     color: #4caf7d;
-    font-size: 1rem;
+    font-size: 1.3rem;
     flex-shrink: 0;
   }
 
