@@ -1,6 +1,6 @@
 <script setup>
 import { useRouter } from 'vue-router';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { skills, projects } from '@/data/portfolioData.js';
 import AppButton from '@/components/AppButton.vue';
 import SkillCard from '@/components/SkillCard.vue';
@@ -10,7 +10,11 @@ import qrcode from '@/assets/qrcode.png';
 const router = useRouter();
 const heroBg = `url(${import.meta.env.BASE_URL}images/forest.jpg)`;
 
+// 作品區：不依賴捲動，頁面載入後就直接滑入
+const projectsIn = ref(false);
+
 onMounted(() => {
+  // 技能區：維持捲動觸發的從右滑入
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach(entry => {
@@ -22,7 +26,14 @@ onMounted(() => {
     },
     { threshold: 0.12 }
   );
-  document.querySelectorAll('.slide-from-right, .slide-from-left').forEach(el => observer.observe(el));
+  document.querySelectorAll('.slide-from-right').forEach(el => observer.observe(el));
+
+  // 作品區：載入後立即觸發滑入動畫（稍微延遲讓動畫感更明顯）
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      projectsIn.value = true;
+    }, 150);
+  });
 });
 </script>
 
@@ -46,7 +57,7 @@ onMounted(() => {
       </div>
     </section>
 
-    <!-- 技能：從右滑入 -->
+    <!-- 技能：捲動到才從右滑入 -->
     <section id="skills" class="section-container slide-from-right">
       <h2>我的技能</h2>
       <div class="grid-skills">
@@ -54,8 +65,8 @@ onMounted(() => {
       </div>
     </section>
 
-    <!-- 作品：從左滑入 -->
-    <section id="projects" class="section-container slide-from-left">
+    <!-- 作品：頁面載入後立即從左滑入，不等捲動 -->
+    <section id="projects" class="section-container slide-from-left" :class="{ 'slide-in': projectsIn }">
       <h2>精選作品</h2>
       <div class="grid-projects">
         <ProjectCard v-for="project in projects" :key="project.id" :project="project" />
@@ -70,14 +81,14 @@ onMounted(() => {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* 從右滑入 */
+/* 從右滑入（技能區，捲動觸發） */
 .slide-from-right {
   opacity: 0;
   transform: translateX(70px);
   transition: opacity 0.75s ease, transform 0.75s ease;
 }
 
-/* 從左滑入 */
+/* 從左滑入（作品區，載入後立即觸發） */
 .slide-from-left {
   opacity: 0;
   transform: translateX(-70px);
